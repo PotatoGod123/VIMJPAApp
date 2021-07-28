@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HelloController {
 
-	@RequestMapping(value="/hello", method=RequestMethod.GET)
+	@RequestMapping(value="/hello-spring-mvc", method=RequestMethod.GET)
 	public String sayHello(ModelMap map){
 		
 		String destinationPage = "welcome";

@@ -35,6 +35,8 @@ public class CarOperations {
 			destinationPage = "carList";
 		}else if(action.equals(ADD_CAR_ACTION)) {
 			destinationPage = "carForm";
+		}else if(action.equals(EDIT_CAR_ACTION)) {
+			destinationPage = "carForm";
 		}
 
 		return destinationPage;
@@ -42,16 +44,25 @@ public class CarOperations {
 	}
 
 	@RequestMapping(value="controller", method=RequestMethod.POST)
-	public String saveCar(@RequestParam(ACTION_KEY) String action, @ModelAttribute CarDTO car) {
+	public String saveCar(@RequestParam(ACTION_KEY) String action, @ModelAttribute CarDTO car, ModelMap map,  @RequestParam(required=false,value="id") String[] ids) {
 		String destinationPage=null;
 		
 		if(action.equals(SAVE_CAR_ACTION)) {
 			System.out.println(car.getMake());
-			if(car.getId() == -1)
+			if(car.getId() == -1) {
 				daoRef.create(car);
+			}else {
+				System.out.println("updating car!");
+				daoRef.update(car);
+			}
+			
+		}else if(action.equals(DELETE_CAR_ACTION)) {
+			if(ids != null) {
+				daoRef.delete(ids);
+			}
 		}
 		
-		
+		map.addAttribute("carList", daoRef.findAll());
 		destinationPage = "carList";
 		return destinationPage;
 		

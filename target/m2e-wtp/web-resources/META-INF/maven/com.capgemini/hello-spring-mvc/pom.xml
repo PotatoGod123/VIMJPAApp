@@ -6,7 +6,7 @@
 	<artifactId>hello-spring-mvc</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hello-spring-mvc Maven Webapp</name>
+	<name>vim Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -36,18 +36,14 @@
 			<version>4.2.5.RELEASE</version>
 		</dependency>
 
-		<!-- Hibernate 5.2.9 Final -->
+	
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.2.9.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>5.2.9.Final</version>
-		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
@@ -67,7 +63,96 @@
 
 
 	</dependencies>
-	<build>
-		<finalName>hello-spring-mvc</finalName>
+		<build>
+		<finalName>bookstore</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<port>8080</port>
+					<path>/</path>
+					<contextReloadable>true</contextReloadable>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>de.qaware.maven</groupId>
+				<artifactId>go-offline-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<configuration>
+					<dynamicDependencies>
+						<DynamicDependency>
+							<groupId>org.apache.maven.surefire</groupId>
+							<artifactId>surefire-junit4</artifactId>
+							<version>2.18.1</version>
+							<repositoryType>PLUGIN</repositoryType>
+						</DynamicDependency>
+					</dynamicDependencies>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>integration</id>
+			<build>
+				<!-- Integration Tests -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.18.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+									<systemPropertyVariables>
+										<!-- Remember to deploy the app and start the server in advance -->
+										<integration.base.url>http://localhost:8080</integration.base.url>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<port>8080</port>
+							<path>/</path>
+							<contextReloadable>true</contextReloadable>
+							
+							
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-tomcat</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<fork>true</fork>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-tomcat</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>shutdown</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

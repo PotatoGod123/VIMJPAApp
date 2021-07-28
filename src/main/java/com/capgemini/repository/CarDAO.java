@@ -2,6 +2,8 @@ package com.capgemini.repository;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.capgemini.beans.CarDTO;
 
 /*NA*/
@@ -9,10 +11,8 @@ import com.capgemini.beans.CarDTO;
  * 
  * This is a CarDAO class
  * @see java.lang.Object
- * @author Abhishek
- * 
  *
- */
+ */ 
 public interface CarDAO 
 {
     public List<CarDTO> findAll(); 

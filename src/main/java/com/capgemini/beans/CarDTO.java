@@ -26,7 +26,7 @@ import javax.persistence.Table;
 public class CarDTO implements Serializable
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
 	@Column(name="MAKE")
